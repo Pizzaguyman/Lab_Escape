@@ -51,6 +51,7 @@ function onCollision(event)
                 btnLeft:removeEventListener("touch", moveLeft)
                 btnRight:removeEventListener("touch", moveRight)
                 btnJump:removeEventListener("touch", jump)
+                player.body:removeEventListener("collision",onCollision)
                 audio.pause(1)
                 audio.play(soundTable.victory, {onComplete = function() 
                     audio.resume(1)
@@ -79,10 +80,9 @@ function spawnEnv()
     env[11] = display.newRect(display.contentCenterX-80, 275, 40, 50)
     env[12] = display.newRect(display.contentCenterX, 220, 40, 90)
     env[13] = display.newRect(display.contentCenterX+90, 260, 140, 10)
-    env[14] = display.newRect(display.contentCenterX+140, 215, 140, 10)
+    env[14] = display.newRect(display.contentCenterX+170, 215, 200, 10)
     
-    env[15] = display.newRect(display.contentCenterX+220, 255, 20, 90)
-    env[16] = display.newRect(display.contentCenterX+250, 215, 40, 10)
+    env[15] = display.newRect(display.contentCenterX+220, 260, 20, 80)
     
     for i=1,#env,1 do
         env[i].fill = {type="image", filename="assets/materials/tile_wall.png"}
@@ -92,7 +92,7 @@ function spawnEnv()
         env[i].fill.y = 0
         sceneGroup:insert(env[i])
     end
-    local groundIds = {1, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16}
+    local groundIds = {1, 5, 6, 7, 8, 9, 10, 11, 13, 14}
     for i=1,#groundIds,1 do
         gr[i] = display.newRect(env[groundIds[i]].x, env[groundIds[i]].y - 
         env[groundIds[i]].height/2, env[groundIds[i]].width-2, 10)
@@ -119,6 +119,7 @@ function spawnEnv()
         spike[i].width, spike[i].height*2)
         spikeDisplay[i].fill = {type = "image", filename = "assets/images/spike.png"}
         sceneGroup:insert(spike[i])
+        sceneGroup:insert(minispike[i])
         sceneGroup:insert(spikeDisplay[i])
     end
 
@@ -172,7 +173,6 @@ function initEnvPhysics()
 
     physics.addBody(exitDoor, "static", {isSensor = true})
     exitDoor.ID = "exit"
-    --physics.setDrawMode("hybrid")
 end
 function quit()
     composer:gotoScene("mainmenu")

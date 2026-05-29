@@ -135,6 +135,7 @@ function spawnEnv()
         spike[i].width, spike[i].height*2)
         spikeDisplay[i].fill = {type = "image", filename = "assets/images/spike.png"}
         sceneGroup:insert(spike[i])
+        sceneGroup:insert(minispike[i])
         sceneGroup:insert(spikeDisplay[i])
     end
 
