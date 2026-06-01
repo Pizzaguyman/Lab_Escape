@@ -2,7 +2,8 @@ local composer = require "composer"
 local scene = composer.newScene()
 local player = require "player"
 local respawnFlag = false
-local background, btnLeft, btnRight, btnJump, btnMenu, sceneGroup, exitDoor, water, spawnpoint, onFireDisplay
+local background, btnLeft, btnRight, btnJump, btnMenu, sceneGroup, exitDoor, water
+local spawnpoint, onFireDisplay, heart, heartCount
 local btnAlpha = 0.6
 local env = {}
 local gr = {}
@@ -28,9 +29,15 @@ end
 function onFrame(event)
     if respawnFlag then
         if fireChannel then audio.stop(fireChannel) end
-        audio.play(soundTable.death)
-        player:respawn()
-        resetBoxes()
+        if player.health > 0 then
+            audio.play(soundTable.death)
+            resetBoxes()
+            player:respawn()
+            heartCount.text = ": "..player.health
+        else
+            audio.play(soundTable.death)
+            quit()
+        end
         respawnFlag = false
     end
     onFireDisplay.x = player.body.x
@@ -274,11 +281,16 @@ function scene:create( event )
     btnJump.alpha = btnAlpha
     btnJump.fill = {type = "image", filename = "assets/images/jumpbtn.png"}
     btnMenu = display.newCircle(-80, 30, 20)
-    btnMenu:setFillColor(0.2)
+    btnMenu.fill = {type = "image", filename = "assets/images/exit.png"}
+    heart = display.newRect(display.contentCenterX + 260, 30, 40, 40)
+    heart.fill = {type = "image", filename = "assets/images/heart.png"}
+    heartCount = display.newText(": 3", display.contentCenterX + 300, 30, native.systemFont, 25)
     sceneGroup:insert(btnLeft)
     sceneGroup:insert(btnRight)
     sceneGroup:insert(btnJump)
     sceneGroup:insert(btnMenu)
+    sceneGroup:insert(heart)
+    sceneGroup:insert(heartCount)
 end
 function scene:show( event )
     if (event.phase == "did") then

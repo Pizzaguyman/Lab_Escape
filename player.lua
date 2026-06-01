@@ -11,6 +11,7 @@ player = {
     direction = 1,
     grounded = false,
     hasKey = false,
+    health = 3
 }
 local function OnFrame(event)
     if not player.grounded then
@@ -94,11 +95,11 @@ function player:spawn(physics)
     self.body.x = self.spawnX
     self.body.y = self.spawnY
     self.body:scale(self.size/240, self.size/240)
-    --physics.setDrawMode("hybrid")
     local halfSize = self.size / 2
     local physicsShape = {-halfSize, -halfSize+2, halfSize, -halfSize+2, halfSize, halfSize-5, -halfSize, halfSize-5}
     physics.addBody(self.body, "dynamic", {bounce = 0, shape = physicsShape})
     self.body.gravityScale=1.5
+    self.health = 3
     self.body.isFixedRotation = true
     self.hasKey = false
     self.jumpsfx = audio.loadSound("assets/sounds/jump.wav")
@@ -113,6 +114,7 @@ function player:respawn()
     self.body.x = self.spawnX
     self.body.y = self.spawnY
     self.body:setLinearVelocity(0,0)
+    self.health = self.health - 1
     self.hasKey = false
     self.isMoving = false
     self.onFire = false

@@ -5,6 +5,7 @@ physics = require "physics"
 audio = require "audio"
 local soundTable
 mainMusicChannel = audio.play(audio.loadStream("assets/music/mainbg.mp3"), { loops = -1 })
+audio.setVolume(mainMusicChannel, 0.5)
 local function goToLevel1()
     composer.gotoScene("level1")
 end
